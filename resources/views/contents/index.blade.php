@@ -44,7 +44,7 @@
 <tr>
   <td style="width:20px" class="bg-info">Assets</td>
   <td class="bg-warning"><strong>
-    {{ $app->path() . DIRECTORY_SEPARATOR  . 'videos' .  DIRECTORY_SEPARATOR . $id }} </strong></td>
+    {{ getcwd()   .  DIRECTORY_SEPARATOR    . 'videos' .  DIRECTORY_SEPARATOR . $id }} </strong></td>
 </tr>
 
 </table>
