@@ -13,16 +13,22 @@
 |
 */
 
-$router->get('/', function () use ($router) {
-    return $router->app->version();
-});
+//$router->get('/', function () use ($router) {
+//    return $router->app->version();
+//});
 
 $router->post('/store', [
     'as' => 'store', 'uses' => 'VideoController@store'
 ]);
 
+$router->get('/', 'VideoController@dashboard');
 $router->get('/video', 'VideoController@index');
-
 $router->get('/video/{id}', 'VideoController@show');
+$router->get('/upload', 'VideoController@upload');
+$router->get('/video/{id}/delete', 'VideoController@delete');
+
+$router->post('/store_video', [
+    'as' => 'store', 'uses' => 'VideoController@store_video'
+]);
 
 

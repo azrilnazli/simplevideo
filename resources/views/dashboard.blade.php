@@ -7,9 +7,9 @@
   <div class="container-fluid">
       <div class="row">
           @include('partials.nav')
-          <main class=" col-lg-6 px-md-4">
+          <main class=" col-lg-auto px-md-4">
             <!-- content -->
-            @include('contents.index')
+            <pre>@php include('../README.md' )@endphp</pre>
           </main>
       </div>
   </div>
