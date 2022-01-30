@@ -1,24 +1,30 @@
-# Lumen PHP Framework
+# Simple Video Management System
+Simple Video is a simple video management system built on Lumen Laravel Framework
 
-[![Build Status](https://travis-ci.org/laravel/lumen-framework.svg)](https://travis-ci.org/laravel/lumen-framework)
-[![Total Downloads](https://img.shields.io/packagist/dt/laravel/framework)](https://packagist.org/packages/laravel/lumen-framework)
-[![Latest Stable Version](https://img.shields.io/packagist/v/laravel/framework)](https://packagist.org/packages/laravel/lumen-framework)
-[![License](https://img.shields.io/packagist/l/laravel/framework)](https://packagist.org/packages/laravel/lumen-framework)
+## Requirements
+1. FFMpeg that support filter_complex
+2. FFMpeg with H264 and AAC
 
-Laravel Lumen is a stunningly fast PHP micro-framework for building web applications with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Lumen attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as routing, database abstraction, queueing, and caching.
+## Features
+1. Encrypted HLS output with rotating keys
 
-## Official Documentation
+## Installation
+1. Git clone this project
+2. composer update
+3. create a database
+4. change database in .env and chmod -R 777 storage/logs
+5. php artisan queue:table
+6. php artisan queue:failed-table
+7. php artisan migrate
+8. php artisan key:generate
+9. php artisan queue:listen --queue=video --timeout=0 ( video encoding queue )
+10. php artisan queue:listen --queue=key --timeout=0 ( secret key generator qeueu )
+11. Make sure to edit you web server / php settings to allow large file upload
+12. Point App/public as yout web server document root
+13. Access http://<domain>/video 
 
-Documentation for the framework can be found on the [Lumen website](https://lumen.laravel.com/docs).
 
-## Contributing
-
-Thank you for considering contributing to Lumen! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Lumen, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
 
 ## License
 
-The Lumen framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Simple Video is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
