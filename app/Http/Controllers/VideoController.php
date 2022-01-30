@@ -26,8 +26,9 @@ class VideoController extends Controller
 
     public function index()
     {
-        $videos  = Video::orderBy('id', 'DESC')->get();
-        return view('index',compact('videos') )->with('name', 'Index');
+        $videos  = Video::where('work', 0)->orderBy('id', 'DESC')->get();
+        $encoding  = Video::where('work', 1)->orderBy('id', 'DESC')->get();
+        return view('index',compact('videos','encoding') )->with('name', 'Index');
     }
 
     public function show($id)
@@ -159,7 +160,7 @@ class VideoController extends Controller
            mkdir($path);
 
            // create directory
-           $collection = collect(['m3u8','keys']);
+           $collection = collect(['m3u8','m3u8/keys']);
            $collection->each( function($item, $key) use ($path) {
                // create directory
                mkdir($path . '/' . $item );
@@ -178,5 +179,22 @@ class VideoController extends Controller
            } else {
                return FALSE;
            }
+    }
+
+    public function embed(){
+        $html = <<<HTML
+        <video-js id="player" class="vjs-default-skin vjs-big-play-centered" controls preload="auto" data-setup='{"fluid": true}'>
+            <source src="/foldername/manifest.m3u8" type="application/x-mpegURL">
+        </video-js>
+        <link href="https://vjs.zencdn.net/7.17.0/video-js.css" rel="stylesheet" />
+        <script src="https://unpkg.com/video.js/dist/video.js"></script>
+        <script src="https://unpkg.com/@videojs/http-streaming/dist/videojs-http-streaming.js"></script>
+
+        <script>
+            var player = videojs('player');
+        </script>
+      HTML;
+
+      return view('embed')->with('html', $html);
     }
 }

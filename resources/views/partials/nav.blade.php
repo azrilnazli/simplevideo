@@ -6,16 +6,28 @@
             <span data-feather="home"></span>
             Dashboard
           </a>
-
+        </li>
+        <li class="nav-item">
           <a class="nav-link" aria-current="page" href="/video">
             <span data-feather="home"></span>
             Video
           </a>
+        </li>
+          <li class="nav-item">
           <a class="nav-link" aria-current="page" href="/upload">
             <span data-feather="home"></span>
             Upload
           </a>
-        </li>
+        </li> 
+        
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/embed">
+            <span data-feather="home"></span>
+            Embed Code
+          </a>
+        </li> 
+
+
       </ul>
     </div>
   </nav>

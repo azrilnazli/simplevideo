@@ -17,9 +17,9 @@
 -->
 
 @if(isset($id))
-<div>
+
   <video-js id="player" class="vjs-default-skin vjs-big-play-centered" controls preload="auto" data-setup='{"fluid": true}'>
-      <source src="/videos/{{ $id }}/keys/manifest.m3u8" type="application/x-mpegURL">
+      <source src="/videos/{{ $id }}/m3u8/manifest.m3u8" type="application/x-mpegURL">
   </video-js>
 
   <script src="https://unpkg.com/video.js/dist/video.js"></script>
@@ -28,28 +28,48 @@
   <script>
       var player = videojs('player');
   </script>
+
+
+<div class=" mt-1">
+<table class="table">
+  <tr>
+    <td style="width:20px" class="bg-info">ID</td>
+    <td class="bg-warning "><strong>{{ $id }}</strong></td>
+  </tr>
+<tr>
+  <td style="width:20px" class="bg-info">Name</td>
+  <td class="bg-warning"><strong>{{ $name }}</strong></td>
+</tr>
+
+<tr>
+  <td style="width:20px" class="bg-info">Assets</td>
+  <td class="bg-warning"><strong>
+    {{ $app->path() . DIRECTORY_SEPARATOR  . 'videos' .  DIRECTORY_SEPARATOR . $id }} </strong></td>
+</tr>
+
+</table>
 </div>
+
 @endif
 
 <br />
-
 <div class="row">
   <div class="col-md-9 col-md-offset-1">
-    <ol class="list-group">
+    <span style="font-size: 1em; color: rgb(71, 255, 102);"><i class="fas fa-check"></i></span>
+    <b> Ready</b>
+  
+    <ol>
       @foreach($videos as $video)
         <li>
+          @if( isset($id) AND $id == $video->id)
+          <strong>
+          [{{ $video->id }}]
+          </strong>
+          @else 
+          [{{ $video->id }}]
+          @endif
           <a href="/video/{{ $video->id }}">{{ $video->name }}</a>
-          <small>@if( $video->work == 0 )
-            <span style="font-size: 1em; color: rgb(71, 255, 102);">
-              <i class="fas fa-check"></i>
-            </span>
-           
-              @else 
-              <span style="font-size: 1em; color: rgb(255, 71, 71);">
-              <i class="fas fa-exclamation-triangle"></i> 
-            </span>
-            
-              @endif
+          <small>
               [ <a href="/video/{{ $video->id }}/delete"><i class="fas fa-trash"></i></a> ]
             </small>
         </li>
@@ -57,6 +77,32 @@
     </ol>
   </div>
 </div>
+
+
+@if(isset($encoding))
+<div class="row">
+  <div class="col-md-9 col-md-offset-1">
+    <span style="font-size: 1em; color: rgb(255, 71, 71);">
+      <i class="fas fa-exclamation-triangle"></i> 
+    </span>
+    <b> Processing</b>
+  
+    <ol>
+      @foreach($encoding as $video)
+        <li>
+          [{{ $video->id }}]
+          {{ $video->name }}
+          <small>
+              [  <i class="fas fa-sync fa-spin"></i>  ]
+            </small>
+        </li>
+      @endforeach
+    </ol>
+  </div>
+</div>
+@endif
+<hr />
+<a class="lead" href="/video">[ refresh ] </a>
 
 
 

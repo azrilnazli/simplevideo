@@ -26,6 +26,7 @@ $router->get('/video', 'VideoController@index');
 $router->get('/video/{id}', 'VideoController@show');
 $router->get('/upload', 'VideoController@upload');
 $router->get('/video/{id}/delete', 'VideoController@delete');
+$router->get('/embed', 'VideoController@embed');
 
 $router->post('/store_video', [
     'as' => 'store', 'uses' => 'VideoController@store_video'

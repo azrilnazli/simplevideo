@@ -29,7 +29,7 @@ class GenerateKeyJob extends Job
     public function handle()
     {
        // echo app()->basePath('public');
-        $path =  app()->basePath('public') . "/videos/" . $this->video->id . '/keys';
+        $path =  app()->basePath('public') . "/videos/" . $this->video->id . '/m3u8';
         echo $this->video->name  . PHP_EOL; 
         $i = 1;
 
@@ -43,7 +43,8 @@ class GenerateKeyJob extends Job
 
             // echo http://localhost:8000/videos/$id/keys/enc$i.key >> tmp
 
-            $content = "/videos/". $this->video->id  ."/keys/enc$i.key" . PHP_EOL;
+           // $content = "/videos/". $this->video->id  ."/keys/enc$i.key" . PHP_EOL; // key URI
+            $content = "keys/enc$i.key" . PHP_EOL; // key URI
             file_put_contents($path . "/tmp.txt" , $content);
 
             //openssl rand 16 
@@ -51,14 +52,12 @@ class GenerateKeyJob extends Job
 
             // mv tmp enc.keyinfo
             rename($path . "/tmp.txt", $path . "/enc.keyinfo");
-
-             
-            echo "$i - generating key for " . $this->video->name . PHP_EOL;
-            echo "Work status is :  " . $this->video->work . PHP_EOL;
+  
+            echo "$i - Generating key for " . $this->video->name . PHP_EOL;
+            //echo "Work status is :  " . $this->video->work . PHP_EOL;
 
             ########################################
-            sleep(5);
-        
+            sleep(1);      
             Cache::forget('videos');
             $data = DB::table('videos')
                 ->where('id', '=', $this->video->id)
