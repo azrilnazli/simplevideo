@@ -18,7 +18,7 @@ Simple Video is a simple video management system built on Lumen Laravel Framewor
 7. php artisan migrate
 8. php artisan key:generate
 9. php artisan queue:listen --queue=video --timeout=0 ( video encoding queue )
-10. php artisan queue:listen --queue=key --timeout=0 ( secret key generator qeueu )
+10. php artisan queue:listen --queue=key --timeout=0 ( secret key generator queue )
 11. Make sure to edit you web server / php settings to allow large file upload
 12. Point App/public as yout web server document root
 13. Access http://<domain>/video 
