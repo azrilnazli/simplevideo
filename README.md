@@ -1,7 +1,7 @@
 # Simple Video Management System
 Simple Video is a automated H264 encryption system built on Lumen Laravel Framework
 
-# Installation Video
+## Installation Video
 https://youtu.be/96i6z2hhgdk
 
 
