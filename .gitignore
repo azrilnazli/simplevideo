@@ -1,0 +1,7 @@
+/vendor
+/public/videos
+/.idea
+Homestead.json
+Homestead.yaml
+.env
+.phpunit.result.cache
