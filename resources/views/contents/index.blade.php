@@ -1,4 +1,3 @@
-<link href="https://vjs.zencdn.net/7.17.0/video-js.css" rel="stylesheet" />
 
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -20,6 +19,7 @@
   <video-js id="player" class="vjs-default-skin vjs-big-play-centered" controls preload="auto" data-setup='{"fluid": true}'>
       <source src="/videos/{{ $id }}/m3u8/manifest.m3u8" type="application/x-mpegURL">
   </video-js>
+  <link href="https://vjs.zencdn.net/7.17.0/video-js.css" rel="stylesheet" />
 
   <script src="https://unpkg.com/video.js/dist/video.js"></script>
   <script src="https://unpkg.com/@videojs/http-streaming/dist/videojs-http-streaming.js"></script>
