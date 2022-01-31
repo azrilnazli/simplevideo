@@ -27,7 +27,10 @@ class VideoController extends Controller
     public function index()
     {
         $videos  = Video::where('work', 0)->orderBy('id', 'DESC')->get();
+        
         $encoding  = Video::where('work', 1)->orderBy('id', 'DESC')->get();
+        
+
         return view('index',compact('videos','encoding') )->with('name', 'Index');
     }
 

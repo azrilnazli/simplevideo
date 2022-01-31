@@ -1,9 +1,8 @@
 <link href="https://vjs.zencdn.net/7.17.0/video-js.css" rel="stylesheet" />
-<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-  <h1 class="h2">Video : {{ $name }}</h1>
+  <h1 class="h2"> {{ $name }}</h1>
 </div>
 
 <!--
@@ -52,57 +51,69 @@
 
 @endif
 
-<br />
-<div class="row">
-  <div class="col-md-9 col-md-offset-1">
-    <span style="font-size: 1em; color: rgb(71, 255, 102);"><i class="fas fa-check"></i></span>
-    <b> Ready</b>
-  
-    <ol>
-      @foreach($videos as $video)
+  <table class="table">
+    <tr>
+      <td colspan=2 style="background-color: lightblue">
+        <h5><i class="fas fa-check text-success"></i> Ready to view</h5>
+      </td>
+    </tr>
+    <tr>
+      @foreach($videos->chunk( round((count($videos)/2)) ) as $chunk)
+      <td style="background-color: #eaeaea">
+        <ul style="list-style-type:none ">
+          @foreach($chunk as $video)
+          <li>
+            @if( isset($id) AND $id == $video->id)
+            <strong>
+            [{{ $video->id }}]
+            </strong>
+            @else 
+            [{{ $video->id }}]
+            @endif
+            <a href="/video/{{ $video->id }}">{{ $video->name }}</a>
+            <small>
+                [ <a href="/video/{{ $video->id }}/delete"><i class="fas fa-trash-alt text-danger"></i></a> ]
+              </small>
+          </li>
+          @endforeach
+        </ul>
+      </td>
+      @endforeach
+    </tr>
+  </table>
+
+
+@if( isset($encoding) AND !empty($encoding) )
+<table class="table">
+  <tr>
+    <td colspan=2 style="background-color:yellow">
+      <h5>  <span style="font-size: 1em; color: rgb(255, 71, 71);">
+        <i class="fas fa-exclamation-triangle"></i> 
+      </span> Still processing</h5>
+    </td>
+  </tr>
+  <tr>
+    @foreach($encoding->chunk( round((count($encoding)/2)) ) as $chunk)
+    <td style="background-color: lightyellow">
+      <ul style="list-style-type:none ">
+        @foreach($chunk as $video)
         <li>
-          @if( isset($id) AND $id == $video->id)
-          <strong>
+    
           [{{ $video->id }}]
-          </strong>
-          @else 
-          [{{ $video->id }}]
-          @endif
+         
           <a href="/video/{{ $video->id }}">{{ $video->name }}</a>
           <small>
-              [ <a href="/video/{{ $video->id }}/delete"><i class="fas fa-trash"></i></a> ]
+              [  <i class="fas fa-sync fa-spin"></i> ]
             </small>
         </li>
-      @endforeach
-    </ol>
-  </div>
-</div>
-
-
-@if(isset($encoding))
-<div class="row">
-  <div class="col-md-9 col-md-offset-1">
-    <span style="font-size: 1em; color: rgb(255, 71, 71);">
-      <i class="fas fa-exclamation-triangle"></i> 
-    </span>
-    <b> Processing</b>
-  
-    <ol>
-      @foreach($encoding as $video)
-        <li>
-          [{{ $video->id }}]
-          {{ $video->name }}
-          <small>
-              [  <i class="fas fa-sync fa-spin"></i>  ]
-            </small>
-        </li>
-      @endforeach
-    </ol>
-  </div>
-</div>
+        @endforeach
+      </ul>
+    </td>
+    @endforeach
+  </tr>
+</table>
 @endif
-<hr />
-<a class="lead" href="/video">[ refresh ] </a>
+<a class="lead" href="/video">[ <i class="fas fa-retweet"></i> refresh ] </a>
 
 
 

@@ -4,30 +4,28 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/">
             <span data-feather="home"></span>
-            Dashboard
+            <i class="fas fa-list"></i> Dashboard
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link" aria-current="page" href="/video">
             <span data-feather="home"></span>
-            Video
+            <i class="fas fa-video"></i> Video
           </a>
         </li>
           <li class="nav-item">
           <a class="nav-link" aria-current="page" href="/upload">
             <span data-feather="home"></span>
-            Upload
+            <i class="fas fa-upload"></i> Upload
           </a>
         </li> 
         
         <li class="nav-item">
           <a class="nav-link" aria-current="page" href="/embed">
             <span data-feather="home"></span>
-            Embed Code
+            <i class="fas fa-code"></i> Embed
           </a>
         </li> 
-
-
       </ul>
     </div>
   </nav>
