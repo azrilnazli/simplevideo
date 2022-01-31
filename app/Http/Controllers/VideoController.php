@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Jobs\GenerateKeyJob;
 use App\Jobs\EncodeVideoJob;
+use App\Jobs\LiveRecordJob;
+use App\Jobs\ConvertToMP4Job;
+
 use App\Models\Video;
 
 
@@ -22,6 +25,10 @@ class VideoController extends Controller
 
     public function dashboard(){
         return view('dashboard');
+    }
+
+    public function live(){
+        return view('live');
     }
 
     public function index()
@@ -197,7 +204,32 @@ class VideoController extends Controller
             var player = videojs('player');
         </script>
       HTML;
-
       return view('embed')->with('html', $html);
+    }
+
+    public function record($channel){
+
+        $rand = rand();
+        // copy ffmpeg.exe to random name
+        $file = 'c:\ffmpeg\bin\ffmpeg.exe';
+        $newFile  = 'c:\ffmpeg\bin\/' . $rand . '.exe';
+
+        if (!copy($file, $newFile)) {
+            echo "failed to copy $file...\n";
+        }
+
+        // Job initialization
+        $record = ( new LiveRecordJob($channel, $rand ) )->onQueue('record');
+        $convert = ( new ConvertToMP4Job($channel, $rand ) )->onQueue('record');
+        
+        // chainable 
+        dispatch(
+            ( $record ) // record from rtmp to mkv
+            ->chain([
+                $convert // convert to MP4
+            ])
+        );
+        
+        echo $newFile;
     }
 }

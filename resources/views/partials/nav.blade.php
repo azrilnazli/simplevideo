@@ -26,6 +26,14 @@
             <i class="fas fa-code"></i> Embed
           </a>
         </li> 
+
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/live">
+            <span data-feather="home"></span>
+            <i class="fas fa-wifi"></i> Livestream
+          </a>
+        </li> 
+
       </ul>
     </div>
   </nav>
