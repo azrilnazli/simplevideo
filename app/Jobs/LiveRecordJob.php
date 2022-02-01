@@ -15,12 +15,14 @@ class LiveRecordJob extends Job
      *
      * @return void
      */
-    public $channel;
+    public $incoming_stream;
     public $rand;
+    public $id;
 
-    public function __construct($channel,$rand)
+    public function __construct($id,$incoming_stream,$rand)
     {
-        $this->channel = $channel;
+        $this->id  = $id;
+        $this->incoming_stream = $incoming_stream;
         $this->rand  = $rand;
     }
 
@@ -34,8 +36,8 @@ class LiveRecordJob extends Job
         //   $cmd = "ffrecord -hide_banner -i rtmp://localhost:1935/hls/channel -max_muxing_queue_size 1024 recording.mkv";
       
         $ffmpeg =  $this->rand;
-        $input = " rtmp://localhost:1935/hls/" . $this->channel;
-        $output = "public/recordings/$this->channel.mkv";
+        $input =  $this->incoming_stream;
+        $output = "public/recordings/$this->id/recording.mkv";
         $progress = "public/recordings/progress.txt";
         
         $cmd = "$ffmpeg -hide_banner -y -i $input -max_muxing_queue_size 1024 $output -progress pipe:1 > $progress";

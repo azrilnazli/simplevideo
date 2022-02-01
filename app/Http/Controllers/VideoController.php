@@ -11,6 +11,7 @@ use App\Jobs\LiveRecordJob;
 use App\Jobs\ConvertToMP4Job;
 
 use App\Models\Video;
+use App\Models\Recording;
 
 
 class VideoController extends Controller
@@ -30,6 +31,7 @@ class VideoController extends Controller
     }
 
     public function live(){
+        // check if there's running recording job
         return view('live');
     }
 
@@ -211,18 +213,37 @@ class VideoController extends Controller
 
     public function ajax(){
    
-        $data['channel'] = $_GET['channel'];
+        //$data['id'] = $_GET['id'];
         $data['recording'] = $_GET['recording'];
+        $data['incoming_stream'] =  $_GET['incoming_stream'];
+        //$data['incoming_stream'] = "rtmp://hls_video.test:1935/hls/stream";
 
         switch($data['recording']){
             case 'start':
                 $file = "recordings/progress.txt";
                 shell_exec("echo '' > $file");
-                $data['rand'] = $this->start_record($data['channel']);
+               
+                
+                // insert into recordings table
+               
+                $recording = Recording::make([
+                    'incoming_stream' => $data['incoming_stream'],
+                    'queue' => 'record',
+                    'name' => 'recording.mp4',
+                    'work' => 1
+                ]);
+                $recording->save();
+
+                // create directory based on recording id
+                $path = "recordings/" . $recording->id . "/"; 
+                mkdir($path);
+
+                $data['rand'] = $this->start_record($recording->id, $data['incoming_stream']);
+                $data['id'] = $recording->id;
+
             break;
 
             case 'stop':
-                
                 $data['rand'] = $_GET['rand'];
                 $this->stop_record($_GET['rand']);
             break;
@@ -235,14 +256,20 @@ class VideoController extends Controller
     public function stop_record($rand){
 
         $cmd = "taskkill /F /IM $rand.exe";
+        //$cmd = "pskill $rand.exe";
+        
         shell_exec($cmd);
         return TRUE;
 
     }
 
-    public function start_record($channel){
+    public function start_record($id, $incoming_stream){
 
         $rand = rand();
+
+        $recording = Recording::find($id);
+        $recording->name = $rand;
+        $recording->save();
         
         // copy ffmpeg.exe to random name
         $file = 'c:\ffmpeg\bin\ffmpeg.exe';
@@ -253,8 +280,8 @@ class VideoController extends Controller
         }
 
         // Job initialization
-        $record = ( new LiveRecordJob($channel, $rand ) )->onQueue('record');
-        $convert = ( new ConvertToMP4Job($channel, $rand ) )->onQueue('record');
+        $record = ( new LiveRecordJob($id, $incoming_stream, $rand ) )->onQueue('record');
+        $convert = ( new ConvertToMP4Job($id, $rand ) )->onQueue('record');
         
         // chainable 
         dispatch(
@@ -269,6 +296,7 @@ class VideoController extends Controller
     }
 
     function progress(){
+   
         $file = "recordings/progress.txt";
         $handle = fopen($file, "r");
         if ($handle) {
@@ -309,6 +337,8 @@ class VideoController extends Controller
 
             $progress[$arr[0] ] = $arr[1];
         }
+      
         return response()->json($progress);
     }
 }
+;

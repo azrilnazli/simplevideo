@@ -59,21 +59,31 @@
 
 
 <div class=" mt-1">
-  <a href="#" id="record" class="btn btn-primary">Record</a>
-  <a href="#" id="stop" class="btn btn-danger">Stop</a>
-  <input type="hidden" id="channel" value="stream" />
-  <input type="hidden" id="rand" value="" />
-<div class="mt-2 col" id="status"></div>
+  <div class="input-group mb-3">
+    <span class="input-group-text bg-primary text-light" id="basic-addon3">Incoming Stream</span>
+    <input readonly type="text" class="form-control" id="incoming_stream" aria-describedby="basic-addon3" value="rtmp://hls_video.test:1935/hls/stream">
+    <a href="#" id="record" class="btn btn-warning">Record</a>
+    <a href="#" id="stop" class="btn btn-danger">Stop</a>
+  </div>
 </div>
+
+
+  
+<div class="mt-2 col" id="status"></div>
+
 
 <script>
   var player = videojs('player');
  </script>
 
+<input type="hidden" id="rand" value="" />
+
+
 <script>
   $(document).ready(function() { // when JQuery is ready
-    var channel = $("#channel").val(); // value get
-    var rand = $("#rand").val(); // value get
+    var incoming_stream = $("#incoming_stream").val(); // value get
+    var id; // value get
+    var rand; // value get
     var recording;
     var count = 1;
     var interval;
@@ -111,14 +121,16 @@
         type: "GET",
         url: "/ajax",
         data: {
-            channel: channel,
+            incoming_stream:  $("#incoming_stream").val(),
             recording: 'start',
         },
         cache: false,
         success: function(data) {
       
           $("#rand").val(data.rand);
-          //alert(data.rand);
+          $("#id").val(data.id);
+         // alert(data.id);
+         // alert(data.rand);
 
         },
         error: function(xhr, status, error) {
@@ -139,13 +151,15 @@
         type: "GET",
         url: "/ajax",
         data: {
-            channel: channel,
             recording: 'stop',
             rand: $("#rand").val(),
+            incoming_stream:  $("#incoming_stream").val(),
+            
         },
         cache: false,
         success: function(data) {
-         // alert(data.rand); // data returned by server
+         // alert('stop');
+          //alert(data.rand); // data returned by server
         },
         error: function(xhr, status, error) {
           console.error(xhr); // javascript error log to console()

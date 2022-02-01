@@ -17,10 +17,11 @@ class ConverttoMP4Job extends Job
      */
     public $channel;
     public $rand;
+    public $id;
 
-    public function __construct($channel,$rand)
+    public function __construct($id,$rand)
     {
-        $this->channel = $channel;
+        $this->id = $id;
         $this->rand  = $rand;
     }
 
@@ -34,10 +35,11 @@ class ConverttoMP4Job extends Job
         //   $cmd = "ffrecord -hide_banner -i rtmp://localhost:1935/hls/channel -max_muxing_queue_size 1024 recording.mkv";
       
         $ffmpeg = "ffrecord";
-        $input  = 'public/recordings/' . $this->channel . '.mkv';
-        $output = 'public/recordings/' . $this->channel . '.mp4';
+        $input  = 'public/recordings/' . $this->id . '/recording.mkv';
+        $output = 'public/recordings/' . $this->id . '/recording.mp4';
+        $progress = "public/recordings/progress.txt";
         
-        $cmd = "$ffmpeg -hide_banner -y -i $input  $output";
+        $cmd = "$ffmpeg -hide_banner -y -i $input   -progress pipe:1 > $progress $output ";
         shell_exec($cmd);
 
         unlink($input);
