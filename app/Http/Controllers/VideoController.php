@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+
 use App\Jobs\GenerateKeyJob;
 use App\Jobs\EncodeVideoJob;
 use App\Jobs\LiveRecordJob;
@@ -207,9 +209,41 @@ class VideoController extends Controller
       return view('embed')->with('html', $html);
     }
 
-    public function record($channel){
+    public function ajax(){
+   
+        $data['channel'] = $_GET['channel'];
+        $data['recording'] = $_GET['recording'];
+
+        switch($data['recording']){
+            case 'start':
+                $file = "recordings/progress.txt";
+                shell_exec("echo '' > $file");
+                $data['rand'] = $this->start_record($data['channel']);
+            break;
+
+            case 'stop':
+                
+                $data['rand'] = $_GET['rand'];
+                $this->stop_record($_GET['rand']);
+            break;
+        }
+
+        //echo json_encode($data);
+        return response()->json($data);
+    }
+
+    public function stop_record($rand){
+
+        $cmd = "taskkill /F /IM $rand.exe";
+        shell_exec($cmd);
+        return TRUE;
+
+    }
+
+    public function start_record($channel){
 
         $rand = rand();
+        
         // copy ffmpeg.exe to random name
         $file = 'c:\ffmpeg\bin\ffmpeg.exe';
         $newFile  = 'c:\ffmpeg\bin\/' . $rand . '.exe';
@@ -229,7 +263,52 @@ class VideoController extends Controller
                 $convert // convert to MP4
             ])
         );
+  
+        // rand() value
+        return $rand;
+    }
+
+    function progress(){
+        $file = "recordings/progress.txt";
+        $handle = fopen($file, "r");
+        if ($handle) {
+            $i=0;
+            $j=0;
+            while (($line = fgets($handle)) !== false) {
+                // process the line read.
+                $line = str_replace("\n","", $line);
+                $line = str_replace("/s","", $line);
+              
+                $rows[$i][$j] = $line;
+
+                if( str_contains($line, 'frame=') ){
+                    $i++;
+                }
+                $j++;
+            }
         
-        echo $newFile;
+            fclose($handle);
+        } else {
+            // error opening the file.
+        }
+       
+        $row = end($rows);
+        $progress['status'] = "<i class=\"fas fa-sync fa-spin text-light\"></i>  Recording";
+        foreach($row as $k => $v){
+            $arr = explode('=', $v);
+
+            if( $arr[0] == 'total_size' ){
+                $arr[1] = round($arr[1]/(1024*1024)) . " Mb"; // equal to MB
+            }
+
+            if( $arr[0] == 'out_time' ){
+                $t = explode(':', $arr[1]);
+                $t[2] = round($t[2]);
+                $arr[1] = "$t[0]:$t[1]:$t[2]";
+            }
+
+            $progress[$arr[0] ] = $arr[1];
+        }
+        return response()->json($progress);
     }
 }

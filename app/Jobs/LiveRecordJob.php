@@ -35,9 +35,10 @@ class LiveRecordJob extends Job
       
         $ffmpeg =  $this->rand;
         $input = " rtmp://localhost:1935/hls/" . $this->channel;
-        $output = 'public/recordings/' . $this->channel . '.mkv';
+        $output = "public/recordings/$this->channel.mkv";
+        $progress = "public/recordings/progress.txt";
         
-        $cmd = "$ffmpeg -hide_banner -y -i $input -max_muxing_queue_size 1024 $output";
+        $cmd = "$ffmpeg -hide_banner -y -i $input -max_muxing_queue_size 1024 $output -progress pipe:1 > $progress";
         shell_exec($cmd);
 
     }

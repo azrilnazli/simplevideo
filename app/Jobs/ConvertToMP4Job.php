@@ -41,7 +41,7 @@ class ConverttoMP4Job extends Job
         shell_exec($cmd);
 
         unlink($input);
-        unlink("c:\ffmpeg\bin\/" . $this->rand . ".exe");
+        unlink("c:\/ffmpeg\/bin\/" . $this->rand . ".exe");
 
     }
 }

@@ -5,3 +5,6 @@ Homestead.json
 Homestead.yaml
 .env
 .phpunit.result.cache
+public/recordings/progress.txt
+public/recordings/reader.php
+public/recordings/stream.mp4
