@@ -9,7 +9,7 @@
           @include('partials.nav')
           <main class=" col-lg-6 px-md-4">
             <!-- content -->
-            @include('contents.live')
+            @include("contents.{$content}")
           </main>
       </div>
   </div>

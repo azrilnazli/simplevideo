@@ -4,13 +4,13 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/">
             <span data-feather="home"></span>
-            <i class="fas fa-list"></i> Dashboard
+            <i class="fas fa-book-reader"></i> Dashboard
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link" aria-current="page" href="/video">
             <span data-feather="home"></span>
-            <i class="fas fa-video"></i> Video
+            <i class="fas fa-list"></i> Videos
           </a>
         </li>
           <li class="nav-item">
@@ -31,6 +31,13 @@
           <a class="nav-link" aria-current="page" href="/live">
             <span data-feather="home"></span>
             <i class="fas fa-wifi"></i> Livestream
+          </a>
+        </li> 
+
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/recordings/index">
+            <span data-feather="home"></span>
+            <i class="fas fa-list"></i> Recordings
           </a>
         </li> 
 

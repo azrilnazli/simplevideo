@@ -27,12 +27,18 @@ class VideoController extends Controller
     }
 
     public function dashboard(){
-        return view('dashboard');
+        return view('layout')->with(['content' => 'dashboard']);
+    }
+
+    public function recordings(){
+        $recordings  = Recording::where('work', 0)->orderBy('id', 'DESC')->get();
+        return view('layout',compact('recordings'))->with(['content' => 'recordings']);
     }
 
     public function live(){
         // check if there's running recording job
-        return view('live');
+        $recording = Recording::where('work',1)->first();
+        return view('layout')->with('recording', $recording)->with(['content' => 'live']);
     }
 
     public function index()
@@ -42,19 +48,19 @@ class VideoController extends Controller
         $encoding  = Video::where('work', 1)->orderBy('id', 'DESC')->get();
         
 
-        return view('index',compact('videos','encoding') )->with('name', 'Index');
+        return view('layout',compact('videos','encoding') )->with('name', 'Index')->with(['content' => 'index']);
     }
 
     public function show($id)
     {
         $videos  = Video::orderBy('id', 'DESC')->get();
         $video = Video::where('id', $id)->first();
-        return view('index',compact('videos') )->with('id', $id)->with('name', $video->name);
+        return view('layout',compact('videos') )->with('id', $id)->with('name', $video->name)->with(['content' => 'index']);
     }
 
     public function upload()
     {
-        return view('upload');
+        return view('layout')->with(['content' => 'upload']);
     }
 
     public function delete($id)
@@ -208,7 +214,7 @@ class VideoController extends Controller
             var player = videojs('player');
         </script>
       HTML;
-      return view('embed')->with('html', $html);
+      return view('layout')->with('html', $html)->with(['content' => 'embed']);
     }
 
     public function ajax(){
