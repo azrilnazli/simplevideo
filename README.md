@@ -25,8 +25,10 @@ https://youtu.be/96i6z2hhgdk
 7. create folder videos in public folder 
 8. run "php artisan queue:listen --queue=video --timeout=0"  ( use laragon terminal 1 )
 9. run "php artisan queue:listen --queue=key --timeout=0" ( use laragon terminal 2 )
-10. Make sure to edit you web server / php settings to allow large file upload
-11. Point App/public as yout web server document root
+10. run "php artisan queue:listen --queue=record --timeout=0" ( use laragon terminal 3 )
+11. Make sure to edit you web server / php settings to allow large file upload
+12. Point App/public as yout web server document root
 
 ## License
-Simple Video is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Simple Video is open-sourced software licensed under the 
+[MIT license](https://opensource.org/licenses/MIT).

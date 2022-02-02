@@ -31,8 +31,15 @@ class VideoController extends Controller
     }
 
     public function recordings(){
-        $recordings  = Recording::where('work', 0)->orderBy('id', 'DESC')->get();
+        $recordings  = Recording::where('work', 0)->orderBy('id', 'DESC')->simplePaginate(20);
         return view('layout',compact('recordings'))->with(['content' => 'recordings']);
+    }
+
+    public function recording_delete($id){
+        Recording::where('id', $id)->delete();
+        $this->rrmdir('recordings/' . $id);
+        return redirect('/recordings/index');
+
     }
 
     public function live(){

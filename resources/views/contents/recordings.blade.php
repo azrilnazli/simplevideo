@@ -30,6 +30,7 @@
                 @endforeach
             </tbody>
         </table>
+        @include('pagination.default', ['paginator' => $recordings])
     </div>
 </div>
 <!-- Button trigger modal -->

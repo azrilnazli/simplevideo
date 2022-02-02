@@ -32,6 +32,7 @@ $router->get('/live/{channel}/record', 'VideoController@record');
 $router->get('/ajax', 'VideoController@ajax');
 $router->get('/progress', 'VideoController@progress');
 $router->get('/recordings/index', 'VideoController@recordings');
+$router->get('/recordings/{id}/delete', 'VideoController@recording_delete');
 
 $router->post('/store_video', [
     'as' => 'store', 'uses' => 'VideoController@store_video'
