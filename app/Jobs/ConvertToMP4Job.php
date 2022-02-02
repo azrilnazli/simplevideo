@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 use Illuminate\Support\Facades\Artisan;
-use App\Models\Video;
+use App\Models\Recording;
 use DB;
 use Cache;
 use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -23,12 +23,16 @@ class ConverttoMP4Job extends Job
     {
         $this->id = $id;
         $this->rand  = $rand;
+
+        $recording = Recording::find($id);
+        $recording->work = 0;
+        $recording->save();
     }
 
     /**
      * Execute the job.
      *
-     * @return void
+     * @return void 
      */
     public function handle()
     {
@@ -39,8 +43,10 @@ class ConverttoMP4Job extends Job
         $output = 'public/recordings/' . $this->id . '/recording.mp4';
         $progress = "public/recordings/progress.txt";
         
-        $cmd = "$ffmpeg -hide_banner -y -i $input   -progress pipe:1 > $progress $output ";
+        $cmd = "$ffmpeg -hide_banner -y -i $input  $output";
         shell_exec($cmd);
+
+      
 
         unlink($input);
         unlink("c:\/ffmpeg\/bin\/" . $this->rand . ".exe");
